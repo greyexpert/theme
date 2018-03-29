@@ -8,8 +8,6 @@ import { StyleSheet } from "react-native";
 import Theme, { ThemeShape } from "./Theme";
 import { resolveComponentStyle } from "./resolveComponentStyle";
 
-const themeCache = {};
-
 /**
  * Formats and throws an error when connecting component style with the theme.
  *
@@ -85,7 +83,7 @@ function getConcreteStyle(style) {
  * @returns {StyledComponent} The new component that will handle
  * the styling of the wrapped component.
  */
-export default (
+const connectStyle = (
   componentStyleName,
   componentStyle = {},
   mapPropsToStyleNames,
@@ -189,7 +187,7 @@ export default (
           );
         } else {
           resolvedStyle = this.resolveStyle(context, props, styleNames);
-          themeCache[componentStyleName] = resolvedStyle;
+					connectStyle.CACHE[componentStyleName] = resolvedStyle;
         }
 
         const concreteStyle = getConcreteStyle(_.merge({}, resolvedStyle));
@@ -317,14 +315,14 @@ export default (
       }
 
       getOrSetStylesInCache(context, props, styleNames, path) {
-        if (themeCache && themeCache[path.join(">")]) {
+        if (connectStyle.CACHE && connectStyle.CACHE[path.join(">")]) {
           // console.log('**************');
 
-          return themeCache[path.join(">")];
+          return connectStyle.CACHE[path.join(">")];
         } else {
           const resolvedStyle = this.resolveStyle(context, props, styleNames);
-          if (Object.keys(themeCache).length < 10000) {
-            themeCache[path.join(">")] = resolvedStyle;
+          if (Object.keys(connectStyle.CACHE).length < 10000) {
+						connectStyle.CACHE[path.join(">")] = resolvedStyle;
           }
           return resolvedStyle;
         }
@@ -340,7 +338,7 @@ export default (
         );
 
         if (context.parentPath) {
-          parentStyle = themeCache[context.parentPath.join(">")];
+          parentStyle = connectStyle.CACHE[context.parentPath.join(">")];
         } else {
           parentStyle = resolveComponentStyle(
             componentStyleName,
@@ -394,3 +392,7 @@ export default (
     return hoistStatics(StyledComponent, WrappedComponent);
   };
 };
+
+connectStyle.CACHE = {};
+
+export default connectStyle;

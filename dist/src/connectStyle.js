@@ -8,8 +8,6 @@ var _reactNative=require('react-native');
 var _Theme=require('./Theme');var _Theme2=_interopRequireDefault(_Theme);
 var _resolveComponentStyle=require('./resolveComponentStyle');function _interopRequireWildcard(obj){if(obj&&obj.__esModule){return obj;}else{var newObj={};if(obj!=null){for(var key in obj){if(Object.prototype.hasOwnProperty.call(obj,key))newObj[key]=obj[key];}}newObj.default=obj;return newObj;}}function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}function _toConsumableArray(arr){if(Array.isArray(arr)){for(var i=0,arr2=Array(arr.length);i<arr.length;i++){arr2[i]=arr[i];}return arr2;}else{return Array.from(arr);}}function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor)){throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self,call){if(!self){throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call&&(typeof call==="object"||typeof call==="function")?call:self;}function _inherits(subClass,superClass){if(typeof superClass!=="function"&&superClass!==null){throw new TypeError("Super expression must either be null or a function, not "+typeof superClass);}subClass.prototype=Object.create(superClass&&superClass.prototype,{constructor:{value:subClass,enumerable:false,writable:true,configurable:true}});if(superClass)Object.setPrototypeOf?Object.setPrototypeOf(subClass,superClass):subClass.__proto__=superClass;}
 
-var themeCache={};
-
 
 
 
@@ -68,7 +66,7 @@ function getConcreteStyle(style){
 return _.pickBy(style,function(value,key){
 return!isStyleVariant(key)&&!isChildStyle(key);
 });
-}exports.default=
+}
 
 
 
@@ -85,7 +83,7 @@ return!isStyleVariant(key)&&!isChildStyle(key);
 
 
 
-function(
+var connectStyle=function connectStyle(
 componentStyleName)
 
 
@@ -189,7 +187,7 @@ context.parentPath),[componentStyleName],_toConsumableArray(styleNames)));
 
 }else{
 resolvedStyle=this.resolveStyle(context,props,styleNames);
-themeCache[componentStyleName]=resolvedStyle;
+connectStyle.CACHE[componentStyleName]=resolvedStyle;
 }
 
 var concreteStyle=getConcreteStyle(_.merge({},resolvedStyle));
@@ -317,14 +315,14 @@ return addedProps;
 }},{key:'getOrSetStylesInCache',value:function getOrSetStylesInCache(
 
 context,props,styleNames,path){
-if(themeCache&&themeCache[path.join(">")]){
+if(connectStyle.CACHE&&connectStyle.CACHE[path.join(">")]){
 
 
-return themeCache[path.join(">")];
+return connectStyle.CACHE[path.join(">")];
 }else{
 var resolvedStyle=this.resolveStyle(context,props,styleNames);
-if(Object.keys(themeCache).length<10000){
-themeCache[path.join(">")]=resolvedStyle;
+if(Object.keys(connectStyle.CACHE).length<10000){
+connectStyle.CACHE[path.join(">")]=resolvedStyle;
 }
 return resolvedStyle;
 }
@@ -340,7 +338,7 @@ componentStyle);
 
 
 if(context.parentPath){
-parentStyle=themeCache[context.parentPath.join(">")];
+parentStyle=connectStyle.CACHE[context.parentPath.join(">")];
 }else{
 parentStyle=(0,_resolveComponentStyle.resolveComponentStyle)(
 componentStyleName,
@@ -385,7 +383,7 @@ _react2.default.createElement(WrappedComponent,_extends({},
 this.props,
 addedProps,{
 style:style,
-ref:this.setWrappedInstance,__source:{fileName:_jsxFileName,lineNumber:384}})));
+ref:this.setWrappedInstance,__source:{fileName:_jsxFileName,lineNumber:382}})));
 
 
 }}]);return StyledComponent;}(_react2.default.Component);StyledComponent.contextTypes={theme:_Theme.ThemeShape,parentPath:_propTypes2.default.array};StyledComponent.childContextTypes={parentPath:_propTypes2.default.array};StyledComponent.propTypes={style:_propTypes2.default.oneOfType([_propTypes2.default.object,_propTypes2.default.number,_propTypes2.default.array]),styleName:_propTypes2.default.string,virtual:_propTypes2.default.bool};StyledComponent.defaultProps={virtual:options.virtual};StyledComponent.displayName='Styled('+componentDisplayName+')';StyledComponent.WrappedComponent=WrappedComponent;
@@ -394,4 +392,8 @@ ref:this.setWrappedInstance,__source:{fileName:_jsxFileName,lineNumber:384}})));
 return(0,_hoistNonReactStatics2.default)(StyledComponent,WrappedComponent);
 };
 };
+
+connectStyle.CACHE={};exports.default=
+
+connectStyle;
 //# sourceMappingURL=connectStyle.js.map
