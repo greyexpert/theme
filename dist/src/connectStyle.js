@@ -315,17 +315,13 @@ return addedProps;
 }},{key:'getOrSetStylesInCache',value:function getOrSetStylesInCache(
 
 context,props,styleNames,path){
-if(connectStyle.CACHE&&connectStyle.CACHE[path.join(">")]){
-
-
-return connectStyle.CACHE[path.join(">")];
-}else{
 var resolvedStyle=this.resolveStyle(context,props,styleNames);
+
 if(Object.keys(connectStyle.CACHE).length<10000){
-connectStyle.CACHE[path.join(">")]=resolvedStyle;
+connectStyle.CACHE[path.join('>')]=resolvedStyle;
 }
+
 return resolvedStyle;
-}
 }},{key:'resolveStyle',value:function resolveStyle(
 
 context,props,styleNames){
@@ -383,7 +379,7 @@ _react2.default.createElement(WrappedComponent,_extends({},
 this.props,
 addedProps,{
 style:style,
-ref:this.setWrappedInstance,__source:{fileName:_jsxFileName,lineNumber:382}})));
+ref:this.setWrappedInstance,__source:{fileName:_jsxFileName,lineNumber:378}})));
 
 
 }}]);return StyledComponent;}(_react2.default.Component);StyledComponent.contextTypes={theme:_Theme.ThemeShape,parentPath:_propTypes2.default.array};StyledComponent.childContextTypes={parentPath:_propTypes2.default.array};StyledComponent.propTypes={style:_propTypes2.default.oneOfType([_propTypes2.default.object,_propTypes2.default.number,_propTypes2.default.array]),styleName:_propTypes2.default.string,virtual:_propTypes2.default.bool};StyledComponent.defaultProps={virtual:options.virtual};StyledComponent.displayName='Styled('+componentDisplayName+')';StyledComponent.WrappedComponent=WrappedComponent;

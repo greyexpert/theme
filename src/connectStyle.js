@@ -315,17 +315,13 @@ const connectStyle = (
       }
 
       getOrSetStylesInCache(context, props, styleNames, path) {
-        if (connectStyle.CACHE && connectStyle.CACHE[path.join(">")]) {
-          // console.log('**************');
+        const resolvedStyle = this.resolveStyle(context, props, styleNames);
 
-          return connectStyle.CACHE[path.join(">")];
-        } else {
-          const resolvedStyle = this.resolveStyle(context, props, styleNames);
-          if (Object.keys(connectStyle.CACHE).length < 10000) {
-						connectStyle.CACHE[path.join(">")] = resolvedStyle;
-          }
-          return resolvedStyle;
+        if(Object.keys(connectStyle.CACHE).length < 10000) {
+          connectStyle.CACHE[path.join('>')] = resolvedStyle;
         }
+
+        return resolvedStyle;
       }
 
       resolveStyle(context, props, styleNames) {
